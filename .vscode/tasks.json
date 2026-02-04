@@ -74,6 +74,61 @@
             }
         },
         "group": "build"
+    },
+    {
+        "label": "uv: sync - albums-api-python",
+        "type": "shell",
+        "command": "uv",
+        "args": ["sync", "--all-extras"],
+        "options": {
+            "cwd": "${workspaceFolder}/albums-api-python"
+        },
+        "problemMatcher": []
+    },
+    {
+        "label": "shell: uv: dev - albums-api-python",
+        "type": "shell",
+        "command": "uv",
+        "args": [
+            "run",
+            "uvicorn",
+            "albums_api.app:app",
+            "--reload",
+            "--host",
+            "0.0.0.0",
+            "--port",
+            "3000"
+        ],
+        "options": {
+            "cwd": "${workspaceFolder}/albums-api-python",
+            "env": {
+                "LOG_LEVEL": "INFO"
+            }
+        },
+        "isBackground": true,
+        "problemMatcher": {
+            "pattern": {
+                "regexp": "^.*$",
+                "file": 1,
+                "location": 2,
+                "message": 3
+            },
+            "background": {
+                "activeOnStart": true,
+                "beginsPattern": "^.*Uvicorn running on.*$",
+                "endsPattern": "^.*Application startup complete.*$"
+            }
+        },
+        "group": "build"
+    },
+    {
+        "label": "shell: dev - python api + album-viewer",
+        "dependsOn": [
+            "shell: uv: dev - albums-api-python",
+            "shell: npm: dev - album-viewer"
+        ],
+        "dependsOrder": "parallel",
+        "problemMatcher": []
     }
   ]
 }

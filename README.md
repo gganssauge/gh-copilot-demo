@@ -13,12 +13,16 @@ This repository has been inspired by the [Azure Container Apps: Dapr Albums Samp
 
 It's used as a code base to demonstrate Github Copilot capabilities.
 
-The solution is composed of two services: the .net album API and the NodeJS album viewer.
+The solution is composed of the album API and the NodeJS album viewer.
 
 
 ### Album API (`album-api`)
 
 The [`album-api`](./album-api) is an .NET 8 minimal Web API that manage a list of Albums in memory.
+
+### Album API (Python) (`albums-api-python`)
+
+The [`albums-api-python`](./albums-api-python) is a FastAPI reimplementation of the album API, managed with `uv` and backed by an in-memory album repository.
 
 ### Album Viewer (`album-viewer`)
 
@@ -70,6 +74,21 @@ dotnet run
 
 The API will start on `http://localhost:3000` and you can access the Swagger documentation at `http://localhost:3000/swagger`.
 
+#### Starting the Album API (Python + uv)
+
+```bash
+# Navigate to the Python API directory
+cd albums-api-python
+
+# Install dependencies (first time only)
+uv sync --all-extras
+
+# Run the API
+uv run uvicorn albums_api.app:app --reload --host 0.0.0.0 --port 3000
+```
+
+The API will start on `http://localhost:3000` and you can access the Swagger documentation at `http://localhost:3000/docs`.
+
 #### Starting the Album Viewer (Vue.js + TypeScript)
 
 ```powershell
@@ -96,6 +115,19 @@ You can run both services simultaneously using separate terminal windows:
 # Terminal 1 - Start the API
 cd albums-api
 dotnet run
+
+# Terminal 2 - Start the Vue TypeScript app
+cd album-viewer
+npm run dev
+```
+
+To run the viewer with the Python API instead, start the Python API on port 3000:
+
+```bash
+# Terminal 1 - Start the API (Python)
+cd albums-api-python
+uv sync --all-extras
+uv run uvicorn albums_api.app:app --reload --host 0.0.0.0 --port 3000
 
 # Terminal 2 - Start the Vue TypeScript app
 cd album-viewer
